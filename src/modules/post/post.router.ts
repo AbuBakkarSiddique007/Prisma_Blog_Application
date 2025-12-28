@@ -13,4 +13,5 @@ router.get("/",
 
 router.post("/posts", postController.createPost)
 
+
 export const postRouter = router;

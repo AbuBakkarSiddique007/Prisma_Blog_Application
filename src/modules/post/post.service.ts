@@ -2,7 +2,7 @@ import type { Post } from "../../../generated/prisma/client"
 import { prisma } from "../../lib/prisma"
 
 
-const cratePost = async (
+const createPost = async (
     postData: Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'views'> & { views?: number }
 ) => {
     const result = await prisma.post.create({
@@ -15,5 +15,5 @@ const cratePost = async (
 };
 
 export const postService = {
-    cratePost
+    createPost
 }
