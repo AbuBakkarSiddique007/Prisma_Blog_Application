@@ -3,12 +3,13 @@ import { prisma } from "../../lib/prisma"
 
 
 const createPost = async (
-    postData: Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'views'> & { views?: number }
+    postData: Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'views' | 'authorId'> & { views?: number }, userId: string
 ) => {
     const result = await prisma.post.create({
-        data: {
+        data : {
             ...postData,
-            views: postData.views || 0
+            authorId: userId,
+            views: postData.views ?? 0 
         }
     });
     return result;
