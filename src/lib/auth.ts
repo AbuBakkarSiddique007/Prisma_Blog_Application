@@ -46,6 +46,7 @@ export const auth = betterAuth({
 
     emailVerification: {
         sendOnSignUp: true,
+        autoSignInAfterVerification: true,
         sendVerificationEmail: async ({ user, url, token }, request) => {
             console.log(`***Send email to ${user.email} with url: ${url} and token: ${token}`);
 
@@ -76,7 +77,7 @@ export const auth = betterAuth({
         <p>Thanks for signing up for Prisma Blog App. Please confirm your email address by clicking the button below:</p>
         <p><a class="btn" href="${verificationUrl}">Verify Email</a></p>
         <p>If the button doesn't work, copy and paste this URL into your browser:</p>
-        <p><a href="${verificationUrl}">${verificationUrl}</a></p>
+        <p><a href="${url}">${url}</a></p>
         <p class="footer">If you didn't request this, you can safely ignore this email.</p>
     </div>
 </body>
@@ -87,6 +88,14 @@ export const auth = betterAuth({
             } catch (error) {
                 console.error(`Failed to send verification email to ${user.email}:`, error);
             }
+        },
+    },
+    socialProviders: {
+        google: {
+            prompt: "select_account consent",
+            accessType: "offline",
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         },
     },
 });
