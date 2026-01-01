@@ -15,6 +15,8 @@ router.get("/",
     }
 )
 
+router.get("/posts", postController.getAllPosts)
+
 router.post("/posts",
     auth(UserRole.ADMIN, UserRole.USER),
 
