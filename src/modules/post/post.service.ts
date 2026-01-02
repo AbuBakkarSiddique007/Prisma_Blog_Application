@@ -1,4 +1,4 @@
-import type { Post } from "../../../generated/prisma/client"
+import type { Post, PostStatus } from "../../../generated/prisma/client"
 import { prisma } from "../../lib/prisma"
 
 
@@ -18,7 +18,10 @@ const createPost = async (
 
 const getAllPosts = async (payload: {
     search?: string,
-    tags?: string[]
+    tags?: string[],
+    isFeatured?: boolean,
+    status?: PostStatus,
+    authorId?: string
 
 }) => {
 
@@ -50,11 +53,24 @@ const getAllPosts = async (payload: {
                         }
                     ]
                 } : {},
-                {
+
+                payload.tags && payload.tags.length > 0 ? {
                     tags: {
                         hasEvery: payload.tags || []
                     }
-                }
+                } : {},
+
+                payload.isFeatured !== undefined ? {
+                    isFeatured: payload.isFeatured
+                } : {},
+
+                payload.status ? {
+                    status: payload.status
+                } : {},
+
+                payload.authorId ? {
+                    authorId: payload.authorId
+                } : {}
             ]
         }
     })
