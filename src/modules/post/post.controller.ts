@@ -26,10 +26,14 @@ const getAllPosts = async (req: Request, res: Response) => {
 
     try {
 
-        const {search } = req.query
+        const { search } = req.query;
         console.log("Search Query : ", search);
 
-        const result = await postService.getAllPosts({ search: search as string });
+        const tags = (req.query.tags as string)?.split(",") || [];
+        console.log("Tags Query : ", tags);
+
+
+        const result = await postService.getAllPosts({ search: search as string, tags });
         res.status(200).json({
             message: "Posts fetched successfully",
             data: result
