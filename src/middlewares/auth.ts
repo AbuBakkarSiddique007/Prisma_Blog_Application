@@ -7,8 +7,6 @@ export enum UserRole {
     USER = "USER"
 }
 
-
-
 declare global {
     namespace Express {
         interface Request {
@@ -56,7 +54,7 @@ const auth = (...roles: UserRole[]) => {
 
         if (roles.length > 0 && !roles.includes(req.user.role as UserRole)) {
             return res.status(403).send({
-                message: "Forbidden! You don't have enough permission to access this resource"
+                message: `Your current role is ${req.user.role} and you don't have permission to access this resource`
             })
         }
         next();

@@ -6,16 +6,19 @@ import cors from 'cors';
 
 
 const app = express();
+app.use(express.json());
+
 app.use(cors({
     origin: process.env.APP_URL,
     credentials: true
 }))
 
+
+// Auth middleware for all /api/auth/* routes
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
 
-app.use(express.json());
-
+// 1. Post routes
 app.use("/", postRouter)
 
 

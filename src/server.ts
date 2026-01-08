@@ -7,6 +7,9 @@ async function run() {
         await prisma.$connect()
         console.log("Database connected successfully.")
 
+        app.get("/", async (req, res) => {
+            res.status(200).send("Hello World from Prisma Blog Application")
+        })
 
 
         app.listen(port, () => {

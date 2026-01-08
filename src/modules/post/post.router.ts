@@ -4,23 +4,15 @@ import { UserRole } from "../../middlewares/auth";
 import { auth } from "../../middlewares/auth";
 
 
-
 const router = Router()
 
-
-router.get("/",
-
-    async (req, res) => {
-        res.status(200).send("Hello World from Post Router")
-    }
-)
-
+// Get all posts
 router.get("/posts", postController.getAllPosts)
 
-router.post("/posts",
-    auth(UserRole.ADMIN, UserRole.USER),
+// Create a new post (Protected route)
+router.post("/posts", auth(UserRole.ADMIN, UserRole.USER), postController.createPost)
 
-    postController.createPost)
+
 
 
 export const postRouter = router;
