@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma"
 
 
 const createPost = async (
-    postData: Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'views' | 'authorId'> & { views?: number }, userId: string
+    postData: Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'views' | 'authorId'> & { views?: number }, userId: string,
 ) => {
     const result = await prisma.post.create({
         data: {
@@ -21,7 +21,12 @@ const getAllPosts = async (payload: {
     tags?: string[],
     isFeatured?: boolean,
     status?: PostStatus,
-    authorId?: string
+    authorId?: string,
+    page: number,
+    limit: number,
+    skip: number,
+    sortBy: string | undefined,
+    sortOrder: 'asc' | 'desc'
 
 }) => {
 
@@ -70,11 +75,31 @@ const getAllPosts = async (payload: {
 
                 payload.authorId ? {
                     authorId: payload.authorId
-                } : {}
+                } : {},
+
+
             ]
+        },
+        orderBy: {
+            [payload.sortBy as string]: payload.sortOrder
         }
     })
-    return result
+
+
+    const total = result.length;
+
+
+
+    return {
+        data: result,
+        pagination: {
+            total,
+            page: payload.page,
+            limit: payload.limit,
+            totalPages: Math.ceil(total / payload.limit)
+        }
+
+    }
 }
 
 
