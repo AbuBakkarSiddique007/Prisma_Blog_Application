@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, RequestHandler, Response } from "express";
 import { postService } from "./post.service";
 import type { PostStatus } from "../../../generated/prisma/enums";
 import paginationAndSortingHelper from "../../helpers/sortingAndPaginationHelpers";
@@ -76,7 +76,35 @@ const getAllPosts = async (req: Request, res: Response) => {
 }
 
 
+const getPostById: RequestHandler = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        console.log("ID : ", id);
+
+        if(!id){
+            throw new Error("Post ID is required");
+        }
+
+        const result = await postService.getPostById(id);
+
+        res.status(200).json({
+            message: "Post fetched successfully",
+            data: result
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to fetch post by id",
+            details: error
+        })
+    }
+
+}
+
+
 export const postController = {
     createPost,
-    getAllPosts
+    getAllPosts,
+    getPostById
 }
