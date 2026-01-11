@@ -7,14 +7,13 @@ import { auth } from "../../middlewares/auth";
 const router = Router()
 
 // Get all posts
-router.get("/posts", postController.getAllPosts)
+router.get("/", postController.getAllPosts)
 
 // Create a new post (Protected route)
-router.post("/posts", auth(UserRole.ADMIN, UserRole.USER), postController.createPost)
+router.post("/", auth(UserRole.ADMIN, UserRole.USER), postController.createPost)
 
 // Get a single post by ID
-router.get("/posts/:id", postController.getPostById)
-
+router.get("/:id", postController.getPostById)
 
 
 
