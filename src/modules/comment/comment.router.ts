@@ -8,6 +8,7 @@ router.post("/", auth(UserRole.USER, UserRole.ADMIN), commentController.createCo
 router.get("/:commentId", commentController.getCommentById)
 router.get("/author/:authorId", commentController.getCommentsByAuthor)
 router.delete("/:commentId", auth(UserRole.USER, UserRole.ADMIN), commentController.deleteComment)
+router.patch("/:commentId", auth(UserRole.USER, UserRole.ADMIN), commentController.updateComment)
 
 
 

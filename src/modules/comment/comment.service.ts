@@ -1,3 +1,4 @@
+import type { CommentStatus } from "../../../generated/prisma/enums"
 import { prisma } from "../../lib/prisma"
 
 const createComment = async (payload: {
@@ -100,9 +101,35 @@ const deleteComment = async (commentId: string, authorId: string) => {
 }
 
 
+const updateComment = async (commentId: string, data: { content?: string, status?: CommentStatus }, authorId: string) => {
+
+    console.log({ commentId, data, authorId });
+
+    const commentData = await prisma.comment.findFirst({
+        where: {
+            id: commentId,
+            authorId
+        },
+
+        select: {
+            id: true
+        }
+    })
+
+    const result = await prisma.comment.updateMany({
+        where: {
+            id: commentId,
+            authorId
+        },
+        data: data
+    })
+}
+
+
 export const commentService = {
     createComment,
     getCommentById,
     getCommentsByAuthor,
-    deleteComment
+    deleteComment,
+    updateComment
 };
