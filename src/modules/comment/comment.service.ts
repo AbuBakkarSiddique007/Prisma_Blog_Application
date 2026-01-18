@@ -78,8 +78,9 @@ const deleteComment = async (commentId: string, authorId: string) => {
     const commentData = await prisma.comment.findFirst({
         where: {
             id: commentId,
-            authorId: authorId
+            authorId
         },
+
         select: {
             id: true
         }
@@ -91,7 +92,7 @@ const deleteComment = async (commentId: string, authorId: string) => {
 
     const result = await prisma.comment.delete({
         where: {
-            id: commentData.id
+            id: commentId
         }
     })
 

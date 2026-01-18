@@ -66,21 +66,23 @@ const deleteComment: RequestHandler = async (req, res) => {
 
     try {
         const user = req.user
+        
+        const authorId = user?.id
         const { commentId } = req.params
 
-        const result = await commentService.deleteComment(commentId as string, user?.id as string)
+        const result = await commentService.deleteComment(commentId as string, authorId as string)
 
         res.status(200).json({
             message: "Comment delete successfully",
             data: result
         })
 
-    } catch (error:any) {
+    } catch (error: any) {
 
         res.status(500).json({
             message: "Failed to delete comment",
             detail: error.message
-           
+
         })
     }
 }
