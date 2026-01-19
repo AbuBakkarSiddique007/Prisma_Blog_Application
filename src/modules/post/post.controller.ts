@@ -82,7 +82,7 @@ const getPostById: RequestHandler = async (req, res) => {
         const { id } = req.params;
         console.log("ID : ", id);
 
-        if(!id){
+        if (!id) {
             throw new Error("Post ID is required");
         }
 
@@ -103,8 +103,36 @@ const getPostById: RequestHandler = async (req, res) => {
 }
 
 
+const getMyOwnPosts: RequestHandler = async (req, res) => {
+    try {
+        const user = req.user
+        console.log("User :", user);
+
+        if (!user) {
+            throw new Error("Your are unauthorized!")
+        }
+
+        console.log("User :", user);
+
+        const result = await postService.getMyOwnPosts(user?.id as string)
+
+        res.status(200).json({
+            message: "Retrieve your own posts successfully",
+            data: result
+        })
+
+    } catch (error: any) {
+        res.status(500).json({
+            message: "Failed to Retrieve your own posts",
+            detail: error.message
+        })
+    }
+}
+
+
 export const postController = {
     createPost,
     getAllPosts,
-    getPostById
+    getPostById,
+    getMyOwnPosts
 }

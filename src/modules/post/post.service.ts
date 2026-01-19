@@ -1,4 +1,4 @@
-import { CommentStatus, type Post, type PostStatus } from "../../../generated/prisma/client"
+import { CommentStatus, PostStatus, type Post } from "../../../generated/prisma/client"
 import { prisma } from "../../lib/prisma"
 
 
@@ -176,9 +176,58 @@ const getPostById = async (id: string) => {
 }
 
 
+const getMyOwnPosts = async (authorId: string) => {
+
+    // Ensure the requesting user exists and is ACTIVE
+    const userInfo = await prisma.user.findFirstOrThrow({
+        where: {
+            id: authorId,
+            status: "ACTIVE"
+        },
+        select: {
+            id: true
+        }
+    })
+
+    const result = await prisma.post.findMany({
+        where: {
+            authorId
+        },
+        orderBy: {
+            createdAt: "desc"
+        },
+        include: {
+            _count: {
+                select: {
+                    comments: true
+                }
+            }
+        }
+    })
+
+    /**
+     * const total = await prisma.post.aggregate({
+        _count : {
+            id : true
+        },
+        where : {
+            authorId
+        }
+    })
+
+    return {
+        result,
+        total
+    };
+     */
+
+    return result
+}
+
 
 export const postService = {
     createPost,
     getAllPosts,
-    getPostById
+    getPostById,
+    getMyOwnPosts
 }

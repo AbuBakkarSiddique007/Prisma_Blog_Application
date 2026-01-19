@@ -9,6 +9,9 @@ const router = Router()
 // Get all posts
 router.get("/", postController.getAllPosts)
 
+// Get all own posts
+router.get("/my-posts", auth(UserRole.ADMIN, UserRole.USER), postController.getMyOwnPosts)
+
 // Create a new post (Protected route)
 router.post("/", auth(UserRole.ADMIN, UserRole.USER), postController.createPost)
 

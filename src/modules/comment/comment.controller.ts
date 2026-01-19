@@ -115,8 +115,8 @@ const updateComment: RequestHandler = async (req, res) => {
 const moderateComment: RequestHandler = async (req, res) => {
 
     try {
-        const {commentId} = req.params
-        const result = await commentService.moderateComment(commentId as string, req.body )
+        const { commentId } = req.params
+        const result = await commentService.moderateComment(commentId as string, req.body)
 
         res.status(200).json({
             message: "Comment moderated successfully",
@@ -131,6 +131,7 @@ const moderateComment: RequestHandler = async (req, res) => {
         })
     }
 }
+
 
 
 export const commentController = {
