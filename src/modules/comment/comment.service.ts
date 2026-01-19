@@ -15,9 +15,10 @@ const createComment = async (payload: {
         }
     })
 
-    if (!payload.parentId) {
+    if (payload.parentId) {
         await prisma.comment.findFirstOrThrow({
             where: {
+                id: payload.parentId,
                 postId: payload.postId
             }
         })
