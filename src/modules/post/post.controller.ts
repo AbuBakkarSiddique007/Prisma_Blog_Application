@@ -130,9 +130,37 @@ const getMyOwnPosts: RequestHandler = async (req, res) => {
 }
 
 
+const updatePost: RequestHandler = async (req, res) => {
+
+    try {
+        const user = req.user
+
+        if (!user) {
+            throw new Error("You aru unauthorized!")
+        }
+
+        const { postId } = req.params
+        const result = await postService.updatePost(postId as string, req.body, user.id)
+
+        res.status(200).json({
+            message: "Post Updated Successfully!",
+            data: result
+        })
+
+    } catch (error: any) {
+        res.status(500).json({
+            message: "Post update fail!",
+            detail: error.message
+
+        })
+    }
+}
+
+
 export const postController = {
     createPost,
     getAllPosts,
     getPostById,
-    getMyOwnPosts
+    getMyOwnPosts,
+    updatePost
 }

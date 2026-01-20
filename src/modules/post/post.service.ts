@@ -225,9 +225,46 @@ const getMyOwnPosts = async (authorId: string) => {
 }
 
 
+/**
+ * user : update only own post. Cannot update isFeatured option
+ * admin : update all post . Can update isFeatured option
+ */
+
+const updatePost = async (postId: string, data: Partial<Post>, authorId: string) => {
+    console.log("Update Post: ", {
+        postId,
+        data,
+        authorId
+    });
+
+    const postData = await prisma.post.findUniqueOrThrow({
+        where: {
+            id: postId
+        },
+        select: {
+            id: true,
+            authorId: true
+        }
+    })
+
+    if (postData.authorId !== authorId) {
+        throw new Error("You are not owner/creator of the post!")
+    }
+
+    const result = await prisma.post.update({
+        where: {
+            id: postData.id
+        },
+        data
+    })
+    return result
+}
+
+
 export const postService = {
     createPost,
     getAllPosts,
     getPostById,
-    getMyOwnPosts
+    getMyOwnPosts,
+    updatePost
 }
