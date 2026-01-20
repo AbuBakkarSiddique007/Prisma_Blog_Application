@@ -230,7 +230,7 @@ const getMyOwnPosts = async (authorId: string) => {
  * admin : update all post . Can update isFeatured option
  */
 
-const updatePost = async (postId: string, data: Partial<Post>, authorId: string) => {
+const updatePost = async (postId: string, data: Partial<Post>, authorId: string, isAdmin: boolean) => {
     console.log("Update Post: ", {
         postId,
         data,
@@ -247,8 +247,12 @@ const updatePost = async (postId: string, data: Partial<Post>, authorId: string)
         }
     })
 
-    if (postData.authorId !== authorId) {
+    if (!isAdmin && (postData.authorId !== authorId)) {
         throw new Error("You are not owner/creator of the post!")
+    }
+
+    if (!isAdmin) {
+        delete data.isFeatured
     }
 
     const result = await prisma.post.update({
