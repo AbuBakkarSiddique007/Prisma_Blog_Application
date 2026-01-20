@@ -15,6 +15,9 @@ router.get("/my-posts", auth(UserRole.ADMIN, UserRole.USER), postController.getM
 // Create a new post (Protected route)
 router.post("/", auth(UserRole.ADMIN, UserRole.USER), postController.createPost)
 
+// Get Stats (place before "/:id" to avoid shadowing)***
+router.get("/stats", auth(UserRole.ADMIN), postController.getStats)
+
 // Get a single post by ID
 router.get("/:id", postController.getPostById)
 
@@ -23,7 +26,5 @@ router.patch("/:postId", auth(UserRole.USER, UserRole.ADMIN), postController.upd
 
 // Update Post 
 router.delete("/:postId", auth(UserRole.USER, UserRole.ADMIN), postController.deletePost)
-
-
 
 export const postRouter = router;
