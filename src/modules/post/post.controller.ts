@@ -1,10 +1,10 @@
-import type { Request, RequestHandler, Response } from "express";
+import type { NextFunction, Request, RequestHandler, Response } from "express";
 import { postService } from "./post.service";
 import type { PostStatus } from "../../../generated/prisma/enums";
 import paginationAndSortingHelper from "../../helpers/sortingAndPaginationHelpers";
 import { UserRole } from "../../middlewares/auth";
 
-const createPost = async (req: Request, res: Response) => {
+const createPost = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
         console.log(req.user);
@@ -16,11 +16,13 @@ const createPost = async (req: Request, res: Response) => {
             data: result
         })
 
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to create post",
-            details: error
-        })
+    } catch (e) {
+        // res.status(500).json({
+        //     message: "Failed to create post",
+        //     details: error
+        // })
+
+        next(e)
     }
 }
 
@@ -77,7 +79,7 @@ const getAllPosts = async (req: Request, res: Response) => {
 }
 
 
-const getPostById: RequestHandler = async (req, res) => {
+const getPostById = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         const { id } = req.params;
@@ -95,10 +97,12 @@ const getPostById: RequestHandler = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(500).json({
-            message: "Failed to fetch post by id",
-            details: error
-        })
+        // res.status(500).json({
+        //     message: "Failed to fetch post by id",
+        //     details: error
+        // })
+
+        next(error)
     }
 
 }
@@ -131,7 +135,7 @@ const getMyOwnPosts: RequestHandler = async (req, res) => {
 }
 
 
-const updatePost: RequestHandler = async (req, res) => {
+const updatePost = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const user = req.user
@@ -149,12 +153,16 @@ const updatePost: RequestHandler = async (req, res) => {
             data: result
         })
 
-    } catch (error: any) {
-        res.status(500).json({
-            message: "Post update fail!",
-            detail: error.message
+    } catch (err) {
+        // res.status(500).json({
+        //     message: "Post update fail!",
+        //     detail: error.message
 
-        })
+        // })
+
+        next(err)
+
+
     }
 }
 
