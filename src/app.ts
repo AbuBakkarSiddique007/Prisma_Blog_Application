@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { type Application } from 'express';
 import { postRouter } from './modules/post/post.router';
 import { auth } from './lib/auth';
 import { toNodeHandler } from "better-auth/node";
@@ -8,7 +8,7 @@ import errorHandler from './middlewares/globalErrorHandler';
 import { notFound } from './middlewares/notFound';
 
 
-const app = express();
+export const app: Application = express();
 app.use(express.json());
 
 app.use(cors({
@@ -26,6 +26,11 @@ app.use("/posts", postRouter)
 
 // 2. Comment routes
 app.use("/comments", commentRouter)
+
+// Root/health route
+app.get("/", (_req, res) => {
+    res.status(200).send("Hello World from Prisma Blog Application")
+})
 
 // Error Handler   
 

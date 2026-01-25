@@ -9,6 +9,7 @@
     // See also https://aka.ms/tsconfig/module
     "module": "ESNext",
     "moduleResolution": "node",
+    // "moduleResolution": "node",
 
     "target": "ES2023",
 
@@ -16,7 +17,7 @@
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
-    // and npm install -D @types/node
+    // and pnpm add -D @types/node
 
     // Other Outputs
     "sourceMap": true,
