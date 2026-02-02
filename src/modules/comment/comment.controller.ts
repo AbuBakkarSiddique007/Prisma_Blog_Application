@@ -1,7 +1,7 @@
-import type { RequestHandler } from "express"
+import type { Request, Response } from "express"
 import { commentService } from "./comment.service"
 
-const createComment: RequestHandler = async (req, res) => {
+const createComment = async (req: Request, res: Response)=> {
     try {
         const userId = req.user?.id;
         req.body.authorId = userId!;
@@ -22,7 +22,7 @@ const createComment: RequestHandler = async (req, res) => {
     }
 }
 
-const getCommentById: RequestHandler = async (req, res) => {
+const getCommentById = async (req: Request, res: Response)=> {
 
     try {
         const { commentId } = req.params;
@@ -42,7 +42,7 @@ const getCommentById: RequestHandler = async (req, res) => {
     }
 }
 
-const getCommentsByAuthor: RequestHandler = async (req, res) => {
+const getCommentsByAuthor = async (req: Request, res: Response)=> {
 
     try {
         const { authorId } = req.params;
@@ -62,7 +62,7 @@ const getCommentsByAuthor: RequestHandler = async (req, res) => {
     }
 }
 
-const deleteComment: RequestHandler = async (req, res) => {
+const deleteComment = async (req: Request, res: Response)=> {
 
     try {
         const user = req.user
@@ -88,7 +88,7 @@ const deleteComment: RequestHandler = async (req, res) => {
 }
 
 
-const updateComment: RequestHandler = async (req, res) => {
+const updateComment = async (req: Request, res: Response)=> {
 
     try {
         const user = req.user
@@ -112,7 +112,7 @@ const updateComment: RequestHandler = async (req, res) => {
     }
 }
 
-const moderateComment: RequestHandler = async (req, res) => {
+const moderateComment = async (req: Request, res: Response)=> {
 
     try {
         const { commentId } = req.params
